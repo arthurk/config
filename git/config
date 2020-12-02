@@ -1,0 +1,23 @@
+[alias]
+    st = status
+    ci = commit
+    co = checkout
+    tags = tag -l
+    branches = branch -a
+    remotes = remote -v
+[color]
+    ui = auto
+[user]
+    name = Arthur Koziel
+    email = arthur@arthurkoziel.com
+[core]
+    editor = vim
+    pager = delta
+[credential]
+    helper = osxkeychain
+[delta]
+    side-by-side = true
+[pull]
+    rebase = false
+[interactive]
+    diffFilter = delta --color-only
