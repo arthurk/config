@@ -1,0 +1,1 @@
+Configuration files (dotfiles) that go into `~/.config` (`$XDG_CONFIG_HOME`) and can be shared between machines.
