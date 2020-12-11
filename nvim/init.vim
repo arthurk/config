@@ -36,5 +36,19 @@ set shortmess+=c
 " completion-nvim TODO move to lua on_attach
 imap <silent> <c-p> <Plug>(completion_trigger)
 
+" Snippets - Reduce startup time TODO
+" let g:snips_author = 'xxx'
+" let g:snips_email  = 'xxx'
+"
+let g:completion_enable_auto_paren = 1
+let g:completion_matching_smart_case = 1
+let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy']
+let g:completion_sorting = 'strategy'
+let g:completion_chain_complete_list = [
+    \{'complete_items': ['lsp', 'snippet']},
+    \{'mode': '<c-p>'},
+    \{'mode': '<c-n>'},
+    \]
+
 " neovim 0.5 lsp and treesitter
 lua require('init')

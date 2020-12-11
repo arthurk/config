@@ -1,0 +1,189 @@
+"dein Scripts-----------------------------
+set runtimepath+=~/.cache/dein/repos/github.com/Shougo/dein.vim
+if dein#load_state('~/.cache/dein')
+  call dein#begin('~/.cache/dein')
+  call dein#add('~/.cache/dein/repos/github.com/Shougo/dein.vim')
+
+  call dein#add('w0rp/ale')
+  call dein#add('majutsushi/tagbar')
+  call dein#add('SirVer/ultisnips')
+  call dein#add('ntpeters/vim-better-whitespace') " highlight trailing whitespace
+  call dein#add('tpope/vim-commentary')
+  call dein#add('tpope/vim-repeat')
+  call dein#add('tpope/vim-surround')
+  call dein#add('jlanzarotta/bufexplorer')
+  call dein#add('christoomey/vim-tmux-navigator')
+
+  " Go
+  call dein#add('fatih/vim-go')
+
+  " Wiki
+  call dein#add('vimwiki/vimwiki')
+
+  " YAML
+  call dein#add('Yggdroot/indentLine')
+  call dein#add('pedrohdz/vim-yaml-folds')
+  call dein#add('junegunn/fzf')
+
+  " Theme
+  call dein#add('arcticicestudio/nord-vim')
+
+  call dein#end()
+  call dein#save_state()
+endif
+
+"End dein Scripts-------------------------
+
+" Figure out the system Python for Neovim.
+" required for vim plugins to work in virtualenv
+if exists("$VIRTUAL_ENV")
+    let g:python3_host_prog=substitute(system("which -a python3 | head -n2 | tail -n1"), "\n", '', 'g')
+else
+    let g:python3_host_prog=substitute(system("which python3"), "\n", '', 'g')
+endif
+
+filetype plugin on
+
+set modeline
+set nobackup
+set nowritebackup
+set noswapfile
+set noshowmode
+set noshowcmd
+set number
+set clipboard+=unnamedplus
+set undofile
+set undodir=$HOME/.vim/undo
+set gdefault
+set mouse=a
+
+" spaces instead of tabs
+set expandtab
+set shiftwidth=4
+set softtabstop=4
+
+" custom indent
+autocmd FileType make setlocal noet
+autocmd FileType javascript setlocal shiftwidth=2 softtabstop=2
+autocmd FileType go setlocal shiftwidth=4 softtabstop=4 tabstop=4 noexpandtab
+
+let mapleader = "\<Space>"
+
+" colors
+syntax enable
+set t_Co=256
+set background=dark
+colorscheme nord
+
+" clear search highlighting on \ key (backslash)
+nnoremap \ :noh<return>
+
+" Ale
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+let g:ale_sign_error = '✘'
+let g:ale_sign_warning = '⚠'
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_python_flake8_options = "--ignore=E3"
+
+" Ctrl+n for next Ale error; Ctrl+m for previous
+nmap <silent> <C-m> <Plug>(ale_previous_wrap)
+nmap <silent> <C-n> <Plug>(ale_next_wrap)
+
+let g:ale_linters = {
+\   'go': ['gobuild'],
+\}
+
+" vim-better-whitespace
+let g:better_whitespace_enabled=1
+let g:strip_whitespace_on_save=1
+let g:strip_whitespace_confirm=0
+
+" Always show a gutter, not just when Ale reports errors
+sign define dummy
+autocmd BufEnter * execute 'sign place 9999 line=1 name=dummy buffer=' . bufnr('')
+
+" Live substitution
+set inccommand=split
+
+" Format json documents
+com! FormatJSON %!jq '.'
+
+" Open new split panes to right and bottom
+set splitbelow
+set splitright
+
+" Easier movement between splits
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+"------------------------------------------------------------------------------
+" FZF
+"------------------------------------------------------------------------------
+set rtp+=/usr/local/opt/fzf
+nnoremap <C-p> :FZF<Cr>
+" use ctrl-s for split, not ctrl-x
+let g:fzf_action = {
+      \ 'ctrl-s': 'split',
+      \ 'ctrl-v': 'vsplit'
+      \ }
+
+let $FZF_DEFAULT_OPTS='--layout=reverse'
+
+" Floating Window
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
+
+" IndentLines
+let g:indentLine_char = '⦙'
+" autocmd InsertEnter,InsertLeave * set cul!
+set foldlevelstart=20
+
+" dont hide quotes in json
+autocmd Filetype json let g:indentLine_setConceal = 0
+
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+
+"------------------------------------------------------------------------------
+" vim-go
+"------------------------------------------------------------------------------
+
+" Using CoC instead
+let g:go_code_completion_enabled = 0
+
+set autowrite
+
+autocmd FileType go nmap <leader>r  <Plug>(go-run)
+autocmd FileType go nmap <leader>t  <Plug>(go-test)
+
+" run :GoBuild or :GoTestCompile based on the go file
+function! s:build_go_files()
+  let l:file = expand('%')
+  if l:file =~# '^\f\+_test\.go$'
+    call go#test#Test(0, 1)
+  elseif l:file =~# '^\f\+\.go$'
+    call go#cmd#Build(0)
+  endif
+endfunction
+
+autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
+autocmd FileType go nmap <Leader>c <Plug>(go-coverage-toggle)
+autocmd FileType go setlocal foldmethod=syntax
+
+let g:go_fmt_command = "goimports"
+
+" need to use Ctrl+s for ultisnips
+" let g:UltiSnipsExpandTrigger="<c-s>"
+
+" ALE displays errors in gutter, don't want quickfix window
+let g:go_fmt_fail_silently = 1
+
+let g:go_highlight_types = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_function_calls = 1
+let g:go_highlight_operators = 1
+
+autocmd FileType vimwiki nmap <Leader>wq <Plug>VimwikiVSplitLink
+autocmd FileType vimwiki nmap <Leader>we <Plug>VimwikiSplitLink
+
+let g:vimwiki_url_maxsave=0
