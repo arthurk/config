@@ -1,5 +1,8 @@
 colorscheme iceberg
 
+"  set leader to space
+let mapleader = "\<Space>"
+
 " keep undo history
 set undofile
 
@@ -18,6 +21,9 @@ set clipboard=unnamed
 
 " Enable truecolor
 set termguicolors
+
+" switch buffers without having to save their changes before
+set hidden
 
 " highlight selection on yank
 au TextYankPost * silent! lua vim.highlight.on_yank {on_visual=false}
@@ -52,3 +58,14 @@ let g:completion_chain_complete_list = [
 
 " neovim 0.5 lsp and treesitter
 lua require('init')
+
+" Telescope
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+" map_tele('<space>ft', 'git_files')
+" map_tele('<space>fd', 'fd')
+"
+nmap <leader>p <Plug>vem_prev_buffer-
+nmap <leader>n <Plug>vem_next_buffer-
