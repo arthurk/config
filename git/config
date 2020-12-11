@@ -2,6 +2,7 @@
     st = status
     ci = commit
     co = checkout
+    sw = switch
     tags = tag -l
     branches = branch -a
     remotes = remote -v
@@ -11,7 +12,7 @@
     name = Arthur Koziel
     email = arthur@arthurkoziel.com
 [core]
-    editor = vim
+    editor = nvim
     pager = delta
 [credential]
     helper = osxkeychain
