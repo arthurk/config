@@ -69,3 +69,5 @@ nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 "
 nmap <leader>p <Plug>vem_prev_buffer-
 nmap <leader>n <Plug>vem_next_buffer-
+
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab

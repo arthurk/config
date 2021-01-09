@@ -4,7 +4,11 @@ SETUVAR --export CLICOLOR:1
 SETUVAR --export EDITOR:nvim
 SETUVAR --export HOMEBREW_NO_AUTO_UPDATE:1
 SETUVAR --export LSCOLORS:ExGxBxDxCxEgEdxbxgxcxd
+SETUVAR --export NNN_TRASH:1
 SETUVAR __fish_initialized:3100
+SETUVAR _fish_abbr_k:kubectl
+SETUVAR _fish_abbr_mv:mv\x20\x2di
+SETUVAR _fish_abbr_rmi:rm\x20\x2di
 SETUVAR _fish_abbr_v:vim
 SETUVAR --export all_proxy:socks5\x3a//127\x2e0\x2e0\x2e1\x3a7890
 SETUVAR fish_color_autosuggestion:555\x1ebrblack
