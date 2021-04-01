@@ -1,0 +1,71 @@
+# vim: filetype=neomuttrc
+
+set editor = "nvim"
+set my_name = "Arthur Koziel"
+unset signature
+
+# Set preferred view modes
+auto_view text/html
+alternative_order text/plain text/enriched text/html
+
+# main options
+set status_on_top
+set date_format = "%d.%m.%Y %H:%M"
+set index_format="%2C %Z %?X?A& ? %D %-15.15F %s (%-4.4c)"
+set sort = 'reverse-date'
+set smtp_authenticators = 'gssapi:login'
+set sleep_time = 0		# Pause 0 seconds for informational messages
+set markers = no		# Disables the `+` displayed at line wraps
+set mark_old = no		# Unread mail stay unread until read
+set mime_forward = yes		# attachments are forwarded with mail
+set wait_key = no		# mutt won't ask "press key to continue"
+set fast_reply			# skip to compose when replying
+set fcc_attach			# save attachments with the body
+set forward_format = "Fwd: %s"	# format of subject when forwarding
+set forward_quote		# include message in forwards
+set reverse_name		# reply as whomever it was to
+set include			# include message in replies
+set connect_timeout = 10	# timeout when connection can't be established
+set mail_check = 30	        # how often (in seconds) NeoMutt should look for new mail
+set nobeep                      # don't beep
+set send_charset = "utf-8:iso-8859-1:us-ascii"
+
+# set timeout = 0
+
+# status bar, date format, finding stuff etc.
+set status_chars = " *%A"
+set status_format = "[ Folder: %f ] [%r%m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? ]%>─%?p?( %p postponed )?"
+
+###--- Mutt sorting ---###
+# set sort=threads
+# set sort_browser=date
+# set sort_aux=reverse-last-date-received
+
+# Pager View Options
+set pager_index_lines = 6
+set pager_context = 3
+set pager_stop
+set menu_scroll
+set tilde
+unset markers
+
+# set index_format=" %zs %zc %zt %-15@date@ %H %-28.28L  %?M?(%1M)&  ? %?X?&·? %s"
+# set pager_format=" %n %zc  %T %s%*  %{!%d %b · %H:%M} %?X?  %X ? %P  "
+# set status_format = " %f%?r? %r?   %m %?n?  %n ?  %?d?  %d ?%?t?  %t ?%?F?  %F? %> %?p?   %p ?"
+# set folder_format = " %N %?n?%3n&   ?  %8m  · %f"
+# set vfolder_format = " %N %?n?%3n&   ?  %8m  · %f"
+# set attach_format = "%u%D  %T%-75.75d %?T?%&   ? %5s · %m/%M"
+
+# paths
+set tmpdir = /tmp/neomutt
+set mailcap_path = ~/.config/neomutt/mailcap
+set header_cache = ~/.cache/mutt/headers
+set message_cachedir = ~/.cache/mutt/bodies
+set attach_save_dir = ~/Downloads
+
+# Sidebar
+set sidebar_visible = yes
+set sidebar_width = 20
+set sidebar_next_new_wrap = yes
+set mail_check_stats
+set sidebar_format = "%D%?F? [%F]?%* %?N?%N/? %?S?%S?"

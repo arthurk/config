@@ -4,13 +4,11 @@ local lsp = require'lspconfig'
 
 -- convenience func, to keep key mappings short
 local map = function(type, key, value)
-  vim.fn.nvim_buf_set_keymap(0,type,key,value,{noremap = true, silent = true});
+  vim.api.nvim_buf_set_keymap(0,type,key,value,{noremap = true, silent = true});
 end
 
+-- enable lsp and completion
 local on_attach = function(client)
-  -- completion-nvim
-  require'completion'.on_attach(client)
-
   -- mappings
   map('n','gd','<cmd>lua vim.lsp.buf.definition()<CR>')
   map('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>')
@@ -26,10 +24,34 @@ local on_attach = function(client)
   -- enable lsp omnifunc
   vim.cmd("setlocal omnifunc=v:lua.vim.lsp.omnifunc")
 
-  -- debug msg
   print("LSP ready")
 end
 
+require'compe'.setup {
+  enabled = true;
+  autocomplete = true;
+  debug = false;
+  min_length = 1;
+  preselect = 'enable';
+  throttle_time = 80;
+  source_timeout = 200;
+  incomplete_delay = 400;
+  allow_prefix_unmatch = false;
+
+  source = {
+    path = true;
+    buffer = true;
+    calc = false;
+    vsnip = false;
+    nvim_lsp = true;
+    nvim_lua = true;
+    spell = false;
+    tags = true;
+    snippets_nvim = false;
+  };
+}
+
+-- Go
 lsp.gopls.setup{
   on_attach = on_attach,
   settings = {
@@ -42,7 +64,10 @@ lsp.gopls.setup{
   }
 }
 
--- vim.g.completion_enable_auto_popup = 0
+-- Terraform
+lsp.terraformls.setup{
+  on_attach = on_attach
+}
 
 -- Synchronously organise (Go) imports.
 -- https://github.com/neovim/nvim-lspconfig/issues/115
@@ -59,12 +84,10 @@ function go_organize_imports_sync(timeout_ms)
   edit = result[1].edit
   vim.lsp.util.apply_workspace_edit(edit)
 end
-
 -- auto organize imports and format go code
 vim.api.nvim_command("au BufWritePre *.go lua go_organize_imports_sync(1000)")
 vim.api.nvim_command("au BufWritePre *.go lua vim.lsp.buf.formatting()")
 
--- treesitter
 require'nvim-treesitter.configs'.setup {
   indent = {
     enable = true,
@@ -72,4 +95,14 @@ require'nvim-treesitter.configs'.setup {
   highlight = {
     enable = true,
   },
+}
+
+require'nvim-web-devicons'.setup {
+ -- globally enable default icons (default to false)
+ -- will get overriden by `get_icons` option
+ default = true;
+}
+
+require'bufferline'.setup{
+  diagnostics = "nvim_lsp"
 }
